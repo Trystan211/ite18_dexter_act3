@@ -4,7 +4,7 @@ import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.152.0/examples/
 
 // Scene Setup
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x87ceeb); // Sky blue background
+scene.background = new THREE.Color(0x0a0a2a); // Deep blue for nighttime
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(20, 10, 30);
@@ -21,25 +21,25 @@ controls.dampingFactor = 0.25;
 // Lush Green Floor
 const grass = new THREE.Mesh(
   new THREE.PlaneGeometry(30, 30), // Smaller ground
-  new THREE.MeshStandardMaterial({ color: 0x228b22 }) // Lush green color
+  new THREE.MeshStandardMaterial({ color: 0x003300 }) // Dark green for nighttime
 );
 grass.rotation.x = -Math.PI / 2;
 scene.add(grass);
 
-// Lights
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); // Brighter ambient light
+// Dim Nighttime Lights
+const ambientLight = new THREE.AmbientLight(0x404080, 0.2); // Dim cool light
 scene.add(ambientLight);
 
-const sunlight = new THREE.DirectionalLight(0xffffff, 1.0); // Strong sunlight
-sunlight.position.set(10, 20, -5);
-scene.add(sunlight);
+const moonlight = new THREE.DirectionalLight(0x9999ff, 0.5); // Soft moonlight
+moonlight.position.set(-10, 20, -10);
+scene.add(moonlight);
 
 // Load Big Tree Model
 const loader = new GLTFLoader();
 let treePosition = { x: 0, y: 0, z: 0 };
 
 loader.load(
-  'https://trystan211.github.io/ite18_dexter_act3/low-poly_game-ready_spruce_tree.glb', // Replace with an actual tree model URL
+  'https://example.com/big_tree_model.glb', // Replace with an actual tree model URL
   (gltf) => {
     const tree = gltf.scene;
     tree.position.set(treePosition.x, treePosition.y, treePosition.z);
@@ -71,14 +71,19 @@ for (let i = 0; i < 50; i++) {
 // Add Fireflies
 const fireflyCount = 100;
 const fireflies = [];
+const minDistanceFromTree = 5; // Minimum distance fireflies spawn from the tree
 
 for (let i = 0; i < fireflyCount; i++) {
+  let x, z;
+
+  // Ensure fireflies are not too close to the tree
+  do {
+    x = Math.random() * 30 - 15;
+    z = Math.random() * 30 - 15;
+  } while (Math.sqrt((x - treePosition.x) ** 2 + (z - treePosition.z) ** 2) < minDistanceFromTree);
+
   const light = new THREE.PointLight(0xffff33, 0.5, 10); // Bright yellow light
-  light.position.set(
-    Math.random() * 30 - 15,
-    Math.random() * 5 + 2,
-    Math.random() * 30 - 15
-  );
+  light.position.set(x, Math.random() * 5 + 2, z);
   fireflies.push(light);
   scene.add(light);
 }
@@ -100,6 +105,11 @@ function onPointerClick() {
     // Change color of the intersected stone
     const stone = intersects[0].object;
     stone.material.color.set(0xff0000); // Red color
+
+    // Revert the stone color back after 2 seconds
+    setTimeout(() => {
+      stone.material.color.set(0x333333); // Original color
+    }, 2000);
   }
 }
 
@@ -131,3 +141,4 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
