@@ -71,19 +71,14 @@ for (let i = 0; i < 50; i++) {
 // Add Fireflies
 const fireflyCount = 100;
 const fireflies = [];
-const minDistanceFromTree = 5; // Minimum distance fireflies spawn from the tree
 
 for (let i = 0; i < fireflyCount; i++) {
-  let x, z;
-
-  // Ensure fireflies are not too close to the tree
-  do {
-    x = Math.random() * 30 - 15;
-    z = Math.random() * 30 - 15;
-  } while (Math.sqrt((x - treePosition.x) ** 2 + (z - treePosition.z) ** 2) < minDistanceFromTree);
+  const x = Math.random() * 30 - 15; // Spread across the smaller ground
+  const z = Math.random() * 30 - 15;
+  const y = Math.random() * 2 + 0.5; // Height variation
 
   const light = new THREE.PointLight(0xffff66, 1.5, 5); // Bright yellow light
-  light.position.set(x, Math.random() * 2 + 0.5, z); // Closer to the ground
+  light.position.set(x, y, z);
   fireflies.push(light);
   scene.add(light);
 }
