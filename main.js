@@ -39,7 +39,7 @@ const loader = new GLTFLoader();
 let treePosition = { x: 0, y: 0, z: 0 };
 
 loader.load(
-  'https://example.com/big_tree_model.glb', // Replace with an actual tree model URL
+  'https://trystan211.github.io/ite18_dexter_act3/low-poly_game-ready_spruce_tree.glb', // Replace with an actual tree model URL
   (gltf) => {
     const tree = gltf.scene;
     tree.position.set(treePosition.x, treePosition.y, treePosition.z);
