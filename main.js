@@ -39,7 +39,7 @@ const loader = new GLTFLoader();
 let treePosition = { x: 0, y: 0, z: 0 };
 
 loader.load(
-  'https://trystan211.github.io/ite18_dexter_act3/low-poly_game-ready_spruce_tree.glb', // Replace with an actual tree model URL
+ 'https://trystan211.github.io/ite18_dexter_act3/low-poly_game-ready_spruce_tree.glb', // Replace with an actual tree model URL
   (gltf) => {
     const tree = gltf.scene;
     tree.position.set(treePosition.x, treePosition.y, treePosition.z);
@@ -82,8 +82,8 @@ for (let i = 0; i < fireflyCount; i++) {
     z = Math.random() * 30 - 15;
   } while (Math.sqrt((x - treePosition.x) ** 2 + (z - treePosition.z) ** 2) < minDistanceFromTree);
 
-  const light = new THREE.PointLight(0xffff33, 0.5, 10); // Bright yellow light
-  light.position.set(x, Math.random() * 5 + 2, z);
+  const light = new THREE.PointLight(0xffff66, 1.5, 5); // Bright yellow light
+  light.position.set(x, Math.random() * 2 + 0.5, z); // Closer to the ground
   fireflies.push(light);
   scene.add(light);
 }
@@ -124,7 +124,7 @@ const animate = () => {
   fireflies.forEach((light) => {
     const time = clock.getElapsedTime();
     light.position.x += Math.sin(time * Math.random()) * 0.1;
-    light.position.y += Math.cos(time * Math.random()) * 0.1;
+    light.position.y += Math.cos(time * Math.random()) * 0.05; // Smaller vertical movement
     light.position.z += Math.sin(time * Math.random()) * 0.1;
   });
 
